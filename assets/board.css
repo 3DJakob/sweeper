@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+* {
+    font-family: sans-serif;
+}
+
+#sweeperElement {
+    display: flex;
+    flex-direction: column;
+}
+
+#sweeperElement div {
+    display: flex;
+    flex-direction: row;
+}
+
+#sweeperElement div div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: grey;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+#sweeperElement div div.bomb {
+    background-color: burlywood;
+}
