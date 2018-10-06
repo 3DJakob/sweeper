@@ -71,7 +71,6 @@ function sideBombCount (i) {
   if (!isLeft(i) && gameBoard[i - 1].bomb) {
     sum++
   }
-  console.log(i)
   if (!isRight(i) && gameBoard[i + 1].bomb) {
     sum++
   }
@@ -121,11 +120,14 @@ function renderRow (rowNumber) {
 }
 
 function click (obj, element, leftClick) {
+  const lost = function () {
+    window.alert('You lost!')
+  }
   if (!gameFrozen) {
     if (leftClick) {
       if (obj.bomb) {
         showGameBoard()
-        window.alert('You lost!')
+        setTimeout(lost, 100)
         gameFrozen = true
       } else {
         element.textContent = obj.number
