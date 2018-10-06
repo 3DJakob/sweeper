@@ -3,8 +3,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     min-width: 100vw;
     min-height: 100vh;
+    background-image: linear-gradient(to right, blueviolet, #CA84D6);
 }
 
 * {
@@ -27,11 +29,31 @@ body {
     justify-content: center;
     width: 30px;
     height: 30px;
-    background-color: grey;
     border: 1px solid #fff;
     color: #fff;
+    margin: 1px;
+    transition: 200ms;
+}
+
+#sweeperElement div div:hover {
+    background-color: rgba(255, 255, 255, 0.3)
 }
 
 #sweeperElement div div.bomb {
-    background-color: burlywood;
+    background-color: #EB547F;
+}
+
+a {
+    border: 1px solid #fff;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+a:hover {
+    background-color: #fff;
+    color: blueviolet;
 }
