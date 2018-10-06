@@ -3,6 +3,10 @@ let gameFrozen = false
 const sizeX = 10
 const sizeY = 10
 
+window.addEventListener('resize', function() {
+  resizeGameBoard()
+}, true)
+
 function initSweep () {
   gameFrozen = false
   clearGameBoard()
@@ -96,10 +100,24 @@ function randomBool () {
 
 function renderGameBoard () {
   const target = document.getElementById('sweeperElement')
-
+  resizeGameBoard()
   for (let i = 0; i < sizeY; i++) {
     target.appendChild(renderRow(i))
   }
+}
+
+function resizeGameBoard () {
+  const target = document.getElementById('sweeperElement')
+  const w = window.innerWidth > 260 ? window.innerWidth : 260
+  const h = window.innerHeight > 260 ? window.innerHeight : 260
+  let result = ''
+  if (w > h) {
+    result = String(h - h / 5) + 'px'
+  } else {
+    result = String(w - w / 5) + 'px'
+  }
+  target.style.height = result
+  target.style.width = result
 }
 
 function renderRow (rowNumber) {
