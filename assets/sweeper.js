@@ -113,6 +113,8 @@ function resizeGameBoard () {
   const ratio = sizeX / sizeY
   let w = window.innerWidth
   let h = window.innerHeight
+  let resultW = 0
+  let resultH = 0
   const minW = sizeX * 20
   const minH = sizeY * 20
   if (w > h) {
@@ -120,13 +122,19 @@ function resizeGameBoard () {
     h = w
     w = temp
   }
-  if (w * 0.95 > minW && w / ratio * 0.95 > minH) {
-    target.style.width = String(w * 0.95)
-    target.style.height = String(w / ratio * 0.95)
+  if (ratio > 1) {
+    resultW = w * 0.95 - 98 * ratio
+    resultH = w / ratio * 0.95 - 98
   } else {
-    target.style.width = String(minW)
-    target.style.height = String(minH)
+    resultW = w * ratio * 0.95 - 98 * ratio
+    resultH = w * 0.95 - 98
   }
+  if (resultW < minW || resultH < minH) {
+    resultW = minW
+    resultH = minH
+  }
+  target.style.width = String(resultW)
+  target.style.height = String(resultH)
 }
 
 function renderRow (rowNumber) {
