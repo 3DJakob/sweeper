@@ -9,6 +9,7 @@ window.addEventListener('resize', function () {
 
 function initSweep () {
   gameFrozen = false
+  gameBoard = []
   clearGameBoard()
   initGameBoard()
   renderGameBoard()
