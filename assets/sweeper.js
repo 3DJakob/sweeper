@@ -1,9 +1,9 @@
 let gameBoard = []
 let gameFrozen = false
-const sizeX = 10
-const sizeY = 10
+let sizeX = 10
+let sizeY = 10
 
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
   resizeGameBoard()
 }, true)
 
@@ -20,6 +20,8 @@ function clearGameBoard () {
 }
 
 function initGameBoard () {
+  sizeX = parseInt(document.getElementById('inputX').value) ? parseInt(document.getElementById('inputX').value) : sizeX
+  sizeY = parseInt(document.getElementById('inputY').value) ? parseInt(document.getElementById('inputY').value) : sizeY
   for (let i = 0; i < sizeX * sizeY; i++) {
     const newEntry = { 'bomb': randomBool(), 'number': 0, clicked: false }
     gameBoard[i] = newEntry
@@ -108,16 +110,23 @@ function renderGameBoard () {
 
 function resizeGameBoard () {
   const target = document.getElementById('sweeperElement')
-  const w = window.innerWidth > 260 ? window.innerWidth : 260
-  const h = window.innerHeight > 260 ? window.innerHeight : 260
-  let result = ''
+  const ratio = sizeX / sizeY
+  let w = window.innerWidth
+  let h = window.innerHeight
+  const minW = sizeX * 20
+  const minH = sizeY * 20
   if (w > h) {
-    result = String(h - h / 5) + 'px'
-  } else {
-    result = String(w - w / 5) + 'px'
+    const temp = h
+    h = w
+    w = temp
   }
-  target.style.height = result
-  target.style.width = result
+  if (w * 0.95 > minW && w / ratio * 0.95 > minH) {
+    target.style.width = String(w * 0.95)
+    target.style.height = String(w / ratio * 0.95)
+  } else {
+    target.style.width = String(minW)
+    target.style.height = String(minH)
+  }
 }
 
 function renderRow (rowNumber) {

@@ -50,8 +50,20 @@ body {
     background-color: #EB547F;
 }
 
-a {
+span {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+span * {
+    color: #fff;
+}
+
+a, input {
     border: 1px solid #fff;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0);
     padding: 10px;
     border-radius: 3px;
     margin: 10px;
@@ -63,4 +75,8 @@ a {
 a:hover {
     background-color: #fff;
     color: blueviolet;
+}
+
+input {
+    width: 70px;
 }
