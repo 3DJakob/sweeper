@@ -134,6 +134,7 @@ function resizeGameBoard () {
     resultW = minW
     resultH = minH
   }
+  target.style.fontSize = resultW / sizeX / 2 + 'px'
   target.style.width = String(resultW)
   target.style.height = String(resultH)
 }
