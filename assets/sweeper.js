@@ -2,6 +2,7 @@ let gameBoard = []
 let gameFrozen = false
 let sizeX = 10
 let sizeY = 10
+let released = true
 
 window.addEventListener('resize', function () {
   resizeGameBoard()
@@ -147,6 +148,9 @@ function renderRow (rowNumber) {
     square.addEventListener('click', function () {
       click(obj, square, true)
     })
+    square.addEventListener('mousedown', function () {
+      clickStart(obj, square)
+    })
     square.addEventListener('contextmenu', function (evt) {
       evt.preventDefault()
       click(obj, square, false)
@@ -157,30 +161,45 @@ function renderRow (rowNumber) {
   return row
 }
 
-function click (obj, element, leftClick) {
-  const lost = function () {
-    window.alert('You lost!')
-  }
-  if (!gameFrozen) {
-    if (leftClick) {
-      if (obj.bomb) {
-        showGameBoard()
-        // setTimeout(window.alert.bind(null, 'You lost!'))
-        setTimeout(lost, 100)
-        gameFrozen = true
-      } else {
-        element.textContent = obj.number
-        obj.clicked = true
-        if (obj.number === 0) {
-          clickNeighbors(obj)
-        }
-      }
-    } else {
-      element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
+function clickStart (obj, square) {
+  const delayedClick = function () {
+    if (!released) {
+      click(obj, square, false)
     }
-    if (checkVictory()) {
-      window.alert('You win!')
-      gameFrozen = true
+  }
+  released = false
+  startPress = new Date().getTime()
+  setTimeout(delayedClick, 200)
+}
+
+function click (obj, element, leftClick) {
+  if (!released) {
+    released = true
+    startPress = 0
+    const lost = function () {
+      window.alert('You lost!')
+    }
+    if (!gameFrozen) {
+      if (leftClick) {
+        if (obj.bomb) {
+          showGameBoard()
+          // setTimeout(window.alert.bind(null, 'You lost!'))
+          setTimeout(lost, 100)
+          gameFrozen = true
+        } else {
+          element.textContent = obj.number
+          obj.clicked = true
+          if (obj.number === 0) {
+            clickNeighbors(obj)
+          }
+        }
+      } else {
+        element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
+      }
+      if (checkVictory()) {
+        window.alert('You win!')
+        gameFrozen = true
+      }
     }
   }
 }
