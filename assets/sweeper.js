@@ -208,49 +208,33 @@ function checkSquare (obj) {
       result.push(gameBoard[obj.index + 1])
     }
   }
+  const checkTopBottom = function (size, place) {
+    if (!gameBoard[obj.index + size + place].clicked) {
+      gameBoard[obj.index + size + place].element.textContent = gameBoard[obj.index + size + place].number
+      gameBoard[obj.index + size + place].clicked = true
+      if (gameBoard[obj.index + size + place].number === 0) {
+        result.push(gameBoard[obj.index + size + place])
+      }
+    }
+  }
   // top
-  if (!isTop(obj.index) && !gameBoard[obj.index - sizeX].clicked) {
-    gameBoard[obj.index - sizeX].element.textContent = gameBoard[obj.index - sizeX].number
-    gameBoard[obj.index - sizeX].clicked = true
-    if (gameBoard[obj.index - sizeX].number === 0) {
-      result.push(gameBoard[obj.index - sizeX])
+  if (!isTop(obj.index)) {
+    checkTopBottom(-sizeX, 0)
+    if (!isRight(obj.index)) {
+      checkTopBottom(-sizeX, 1)
     }
-  }
-  if (!isTop(obj.index) && !isRight(obj.index) && !gameBoard[obj.index - sizeX + 1].clicked) {
-    gameBoard[obj.index - sizeX + 1].element.textContent = gameBoard[obj.index - sizeX + 1].number
-    gameBoard[obj.index - sizeX + 1].clicked = true
-    if (gameBoard[obj.index - sizeX + 1].number === 0) {
-      result.push(gameBoard[obj.index - sizeX + 1])
-    }
-  }
-  if (!isTop(obj.index) && !isLeft(obj.index) && !gameBoard[obj.index - sizeX - 1].clicked) {
-    gameBoard[obj.index - sizeX - 1].element.textContent = gameBoard[obj.index - sizeX - 1].number
-    gameBoard[obj.index - sizeX - 1].clicked = true
-    if (gameBoard[obj.index - sizeX - 1].number === 0) {
-      result.push(gameBoard[obj.index - sizeX - 1])
+    if (!isLeft(obj.index)) {
+      checkTopBottom(-sizeX, -1)
     }
   }
   // bottom
-  if (!isBottom(obj.index) && !gameBoard[obj.index + sizeX].clicked) {
-    gameBoard[obj.index + sizeX].element.textContent = gameBoard[obj.index + sizeX].number
-    gameBoard[obj.index + sizeX].clicked = true
-    if (gameBoard[obj.index + sizeX].number === 0) {
-      result.push(gameBoard[obj.index + sizeX])
+  if (!isBottom(obj.index)) {
+    checkTopBottom(sizeX, 0)
+    if (!isRight(obj.index)) {
+      checkTopBottom(sizeX, 1)
     }
-  }
-  if (!isBottom(obj.index) && !isRight(obj.index) && !gameBoard[obj.index + sizeX + 1].clicked) {
-    gameBoard[obj.index + sizeX + 1].element.textContent = gameBoard[obj.index + sizeX + 1].number
-    gameBoard[obj.index + sizeX + 1].clicked = true
-    if (gameBoard[obj.index + sizeX + 1].number === 0) {
-      result.push(gameBoard[obj.index + sizeX + 1])
-    }
-  }
-  // problem
-  if (!isBottom(obj.index) && !isLeft(obj.index) && !gameBoard[obj.index + sizeX - 1].clicked) {
-    gameBoard[obj.index + sizeX - 1].element.textContent = gameBoard[obj.index + sizeX - 1].number
-    gameBoard[obj.index + sizeX - 1].clicked = true
-    if (gameBoard[obj.index + sizeX - 1].number === 0) {
-      result.push(gameBoard[obj.index + sizeX - 1])
+    if (!isLeft(obj.index)) {
+      checkTopBottom(sizeX, -1)
     }
   }
 
