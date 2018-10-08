@@ -3,6 +3,7 @@ let gameFrozen = false
 let sizeX = 10
 let sizeY = 10
 let released = true
+let invertClick = false
 
 window.addEventListener('resize', function () {
   resizeGameBoard()
@@ -172,7 +173,15 @@ function clickStart (obj, square) {
   setTimeout(delayedClick, 200)
 }
 
+function invertClickToggle () {
+  document.getElementById('invert').classList.toggle('active')
+  invertClick = !invertClick
+}
+
 function click (obj, element, leftClick) {
+  if (invertClick) {
+    leftClick = !leftClick
+  }
   if (!released) {
     released = true
     startPress = 0
@@ -195,6 +204,7 @@ function click (obj, element, leftClick) {
         }
       } else {
         element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
+        obj.clicked = true
       }
       if (checkVictory()) {
         window.alert('You win!')

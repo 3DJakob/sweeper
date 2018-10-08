@@ -82,3 +82,8 @@ a:hover {
 input {
     width: 70px;
 }
+
+a#invert.active {
+    background-color: #fff;
+    color: blueviolet;
+}
