@@ -24,7 +24,7 @@ function initGameBoard () {
   sizeX = parseInt(document.getElementById('inputX').value) ? parseInt(document.getElementById('inputX').value) : sizeX
   sizeY = parseInt(document.getElementById('inputY').value) ? parseInt(document.getElementById('inputY').value) : sizeY
   for (let i = 0; i < sizeX * sizeY; i++) {
-    const newEntry = { 'bomb': randomBool(), 'number': 0, clicked: false }
+    const newEntry = { 'bomb': randomBool(), 'number': 0, clicked: false, index: i, element: {} }
     gameBoard[i] = newEntry
   }
 
@@ -151,6 +151,7 @@ function renderRow (rowNumber) {
       click(obj, square, false)
     })
     row.appendChild(square)
+    obj.element = square
   }
   return row
 }
@@ -163,11 +164,15 @@ function click (obj, element, leftClick) {
     if (leftClick) {
       if (obj.bomb) {
         showGameBoard()
+        // setTimeout(window.alert.bind(null, 'You lost!'))
         setTimeout(lost, 100)
         gameFrozen = true
       } else {
         element.textContent = obj.number
         obj.clicked = true
+        if (obj.number === 0) {
+          clickNeighbors(obj)
+        }
       }
     } else {
       element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
@@ -177,6 +182,79 @@ function click (obj, element, leftClick) {
       gameFrozen = true
     }
   }
+}
+
+function clickNeighbors (obj) {
+  checkSquare(obj).forEach(element => {
+    clickNeighbors(element)
+  })
+}
+
+function checkSquare (obj) {
+  let result = []
+  // left
+  if (!isLeft(obj.index) && !gameBoard[obj.index - 1].clicked) {
+    gameBoard[obj.index - 1].element.textContent = gameBoard[obj.index - 1].number
+    gameBoard[obj.index - 1].clicked = true
+    if (gameBoard[obj.index - 1].number === 0) {
+      result.push(gameBoard[obj.index - 1])
+    }
+  }
+  // right
+  if (!isRight(obj.index) && !gameBoard[obj.index + 1].clicked) {
+    gameBoard[obj.index + 1].element.textContent = gameBoard[obj.index + 1].number
+    gameBoard[obj.index + 1].clicked = true
+    if (gameBoard[obj.index + 1].number === 0) {
+      result.push(gameBoard[obj.index + 1])
+    }
+  }
+  // top
+  if (!isTop(obj.index) && !gameBoard[obj.index - sizeX].clicked) {
+    gameBoard[obj.index - sizeX].element.textContent = gameBoard[obj.index - sizeX].number
+    gameBoard[obj.index - sizeX].clicked = true
+    if (gameBoard[obj.index - sizeX].number === 0) {
+      result.push(gameBoard[obj.index - sizeX])
+    }
+  }
+  if (!isTop(obj.index) && !isRight(obj.index) && !gameBoard[obj.index - sizeX + 1].clicked) {
+    gameBoard[obj.index - sizeX + 1].element.textContent = gameBoard[obj.index - sizeX + 1].number
+    gameBoard[obj.index - sizeX + 1].clicked = true
+    if (gameBoard[obj.index - sizeX + 1].number === 0) {
+      result.push(gameBoard[obj.index - sizeX + 1])
+    }
+  }
+  if (!isTop(obj.index) && !isLeft(obj.index) && !gameBoard[obj.index - sizeX - 1].clicked) {
+    gameBoard[obj.index - sizeX - 1].element.textContent = gameBoard[obj.index - sizeX - 1].number
+    gameBoard[obj.index - sizeX - 1].clicked = true
+    if (gameBoard[obj.index - sizeX - 1].number === 0) {
+      result.push(gameBoard[obj.index - sizeX - 1])
+    }
+  }
+  // bottom
+  if (!isBottom(obj.index) && !gameBoard[obj.index + sizeX].clicked) {
+    gameBoard[obj.index + sizeX].element.textContent = gameBoard[obj.index + sizeX].number
+    gameBoard[obj.index + sizeX].clicked = true
+    if (gameBoard[obj.index + sizeX].number === 0) {
+      result.push(gameBoard[obj.index + sizeX])
+    }
+  }
+  if (!isBottom(obj.index) && !isRight(obj.index) && !gameBoard[obj.index + sizeX + 1].clicked) {
+    gameBoard[obj.index + sizeX + 1].element.textContent = gameBoard[obj.index + sizeX + 1].number
+    gameBoard[obj.index + sizeX + 1].clicked = true
+    if (gameBoard[obj.index + sizeX + 1].number === 0) {
+      result.push(gameBoard[obj.index + sizeX + 1])
+    }
+  }
+  // problem
+  if (!isBottom(obj.index) && !isLeft(obj.index) && !gameBoard[obj.index + sizeX - 1].clicked) {
+    gameBoard[obj.index + sizeX - 1].element.textContent = gameBoard[obj.index + sizeX - 1].number
+    gameBoard[obj.index + sizeX - 1].clicked = true
+    if (gameBoard[obj.index + sizeX - 1].number === 0) {
+      result.push(gameBoard[obj.index + sizeX - 1])
+    }
+  }
+
+  return result
 }
 
 function showGameBoard () {
