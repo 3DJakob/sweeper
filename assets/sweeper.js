@@ -203,8 +203,13 @@ function click (obj, element, leftClick) {
           }
         }
       } else {
-        element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
-        obj.clicked = true
+        if (element.innerHTML === '') {
+          element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
+          obj.clicked = true
+        } else {
+          element.innerHTML = ''
+          obj.clicked = false
+        }
       }
       if (checkVictory()) {
         window.alert('You win!')
