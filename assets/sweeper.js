@@ -202,7 +202,7 @@ function click (obj, element, leftClick) {
             clickNeighbors(obj)
           }
         }
-      } else {
+      } else if (element.textContent !== String(obj.number)) {
         if (element.innerHTML === '') {
           element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
           obj.clicked = true
