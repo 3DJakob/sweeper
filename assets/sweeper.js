@@ -4,17 +4,24 @@ let sizeX = 10
 let sizeY = 10
 let released = true
 let invertClick = false
+let firstClick = true
 
 window.addEventListener('resize', function () {
   resizeGameBoard()
 }, true)
 
-function initSweep () {
+function initSweep (restartIndex) {
+  firstClick = true
   gameFrozen = false
   gameBoard = []
   clearGameBoard()
   initGameBoard()
   renderGameBoard()
+  if (restartIndex) {
+    const obj = gameBoard[restartIndex]
+    const element = document.getElementById('n' + restartIndex)
+    click(obj, element, true)
+  }
 }
 
 function clearGameBoard () {
@@ -156,6 +163,7 @@ function renderRow (rowNumber) {
       evt.preventDefault()
       click(obj, square, false)
     })
+    square.id = 'n' + obj.index
     row.appendChild(square)
     obj.element = square
   }
@@ -183,39 +191,43 @@ function click (obj, element, leftClick) {
     leftClick = !leftClick
   }
   if (!released) {
-    released = true
-    startPress = 0
-    const lost = function () {
-      window.alert('You lost!')
-    }
-    if (!gameFrozen) {
-      if (leftClick) {
-        if (obj.bomb) {
-          showGameBoard()
-          // setTimeout(window.alert.bind(null, 'You lost!'))
-          setTimeout(lost, 100)
-          gameFrozen = true
-        } else {
-          element.textContent = obj.number
-          obj.clicked = true
-          if (obj.number === 0) {
-            clickNeighbors(obj)
+    if (leftClick && firstClick && (obj.number !== 0 || obj.bomb)) {
+      initSweep(obj.index)
+    } else {
+      const lost = function () {
+        window.alert('You lost!')
+      }
+      if (!gameFrozen) {
+        if (leftClick) {
+          firstClick = false
+          if (obj.bomb) {
+            showGameBoard()
+            // setTimeout(window.alert.bind(null, 'You lost!'))
+            setTimeout(lost, 100)
+            gameFrozen = true
+          } else {
+            element.textContent = obj.number
+            obj.clicked = true
+            if (obj.number === 0) {
+              clickNeighbors(obj)
+            }
+          }
+        } else if (element.textContent !== String(obj.number)) {
+          if (element.innerHTML === '') {
+            element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
+            obj.clicked = true
+          } else {
+            element.innerHTML = ''
+            obj.clicked = false
           }
         }
-      } else if (element.textContent !== String(obj.number)) {
-        if (element.innerHTML === '') {
-          element.innerHTML = '<i class="fa fa-flag-o" aria-hidden="true"></i>'
-          obj.clicked = true
-        } else {
-          element.innerHTML = ''
-          obj.clicked = false
+        if (checkVictory()) {
+          window.alert('You win!')
+          gameFrozen = true
         }
       }
-      if (checkVictory()) {
-        window.alert('You win!')
-        gameFrozen = true
-      }
     }
+    released = true
   }
 }
 
